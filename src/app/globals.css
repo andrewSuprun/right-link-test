@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* Reset */
+/* Safer reset */
+* {
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3, p, ul, ol {
+  margin: 0;
+}
+
+
+/* Base body styles */
+body {
+  font-family: sans-serif;
+  background-color: #F2F4F6;
+  color: #000;
+}
+
+.text-small-300 {
+  @apply text-sm font-light;
+}
