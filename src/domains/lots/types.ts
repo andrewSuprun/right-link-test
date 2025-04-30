@@ -84,4 +84,5 @@ export type PropLot = {
   damage?: string;
   sellerType?: string;
   site: number;
+  odobrand: string;
 }

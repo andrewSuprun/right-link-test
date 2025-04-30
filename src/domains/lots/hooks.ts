@@ -1,7 +1,7 @@
 // domains/lots/hooks.ts
 import { useState, useEffect } from 'react';
 import { getLots } from './api';
-import { FilterParams, Lot } from './types';
+import { FilterParams, Lot, PropLot } from './types';
 
 import useSWR from 'swr';
 import { fetcher } from '../../lib/fetcher';
@@ -16,7 +16,7 @@ export const useLots = (initialFilters?: FilterParams) => {
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const mapLot = (lot: any): Lot => ({
+  const mapLot = (lot: Lot): PropLot => ({
     id: lot.id,
     title: lot.title || `${lot.year} ${lot.make} ${lot.model}`,
     imageUrl: lot.link_img_small?.[0] || '/no-image.png',
@@ -33,6 +33,7 @@ export const useLots = (initialFilters?: FilterParams) => {
     damage: lot.damage_pr,
     sellerType: lot.seller_type,
     site: lot.site,
+    odobrand: lot.odobrand,
   });
 
   const fetchLots = async (newPage = page, reset = false) => {
