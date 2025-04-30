@@ -7,16 +7,14 @@ import LotCard from '../LotCard';
 
 type LotListProps = {
   lots: PropLot[];
+  loadMore: () => {};
+  hasMore: boolean;
+  isLoading: boolean;
 };
 
 export default function LotList({ lots, loadMore, hasMore, isLoading }: LotListProps) {
   const { ref, inView } = useInView({ threshold: 0.2 });
 
-  // Optionally auto-load when user scrolls to button
-  // Disable auto-trigger if you want button-only logic
-  // useEffect(() => {
-  //   if (inView && hasMore) loadMore();
-  // }, [inView, hasMore, loadMore]);
 
   return (
     <div className="flex flex-col gap-4 px-4">

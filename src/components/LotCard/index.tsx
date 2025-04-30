@@ -1,17 +1,16 @@
 'use client';
 
 import Image from 'next/image';
+import { useMemo } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { formatDistanceStrict } from 'date-fns';
 import { capitalizeWords, cn } from '../../lib/utils';
 import { PropLot } from '../../domains/lots/types';
 import { useCurrentBidWhenVisible } from '../../domains/lots/hooks';
-import { useInView } from 'react-intersection-observer';
 
-
-// Reusable badge styles
-const greenIcon = 'bg-green-100 border font-[350] border-green-200 text-green-700';
+const greenIcon =
+  'bg-green-100 border font-[350] border-green-200 text-green-700';
 const redIcon = 'bg-red-100 text-red-700 font-[350] border border-[#EC2A31]';
-
-// ✅ Reusable subcomponents
 
 const Badge = ({
   label,
@@ -22,7 +21,7 @@ const Badge = ({
 }) => (
   <span
     className={cn(
-      'px-2 py-0.5 max-h-5 rounded text-xs font-medium',
+      'px-2 py-0.5 max-h-5 rounded text-xs font-medium text-nowrap',
       isPositive ? greenIcon : redIcon
     )}
   >
@@ -39,10 +38,9 @@ const InfoRow = ({
 }) => (
   <div className="p-6 text-sm flex flex-col">
     <span className="text-gray-400 font-light">{label}:</span>
-    <span className="font-[350]">{value ?? '-'}</span>
+    <span className="font-[350] break-all">{value ?? '-'}</span>
   </div>
 );
-
 
 const BidBox = ({
   currentBid,
@@ -58,23 +56,17 @@ const BidBox = ({
       }`}
     >
       <div className="text-gray-500">Current Bid:</div>
-      <div >${currentBid || 0}</div>
+      <div>${currentBid || 0}</div>
     </div>
 
     {priceNew && (
       <div className="w-1/2 border rounded px-4 py-2 text-xs font-[350] text-red-600 border-red-300 bg-red-50">
         <div className="text-red-400">Buy Now:</div>
-        <div >${priceNew}</div>
+        <div>${priceNew}</div>
       </div>
     )}
   </div>
 );
-
-
-
-
-
-// ✅ Main component
 
 export default function LotCard(props: PropLot) {
   const {
@@ -93,54 +85,99 @@ export default function LotCard(props: PropLot) {
     site,
     odobrand,
   } = props;
+
   const { ref, inView } = useInView({
     triggerOnce: false,
     threshold: 0,
     delay: 500,
   });
-
   const { currentBid } = useCurrentBidWhenVisible(lotId, site, inView);
+
+  const siteLogo = useMemo(() => {
+    if (site === 1 || site === 3) return { src: '/copart.svg', alt: 'Copart' };
+    if (site === 2 || site === 4) return { src: '/IAA.svg', alt: 'IAAI' };
+    return null;
+  }, [site]);
+
+  const auctionDate = useMemo(() => {
+    if (!dateEnd) return '-';
+    const date = new Date(dateEnd);
+
+    const localDate = date.toLocaleDateString(undefined, {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+    });
+
+    const localTime = date.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+
+    const timezoneOffsetMin = date.getTimezoneOffset();
+    const offsetHours = Math.floor(Math.abs(timezoneOffsetMin) / 60);
+    const offsetSign = timezoneOffsetMin > 0 ? '-' : '+';
+
+    const gmtString = `GMT${offsetSign}${offsetHours}`;
+
+    return `${localDate}, ${localTime} ${gmtString}`;
+  }, [dateEnd]);
+
+  const timeLeft = useMemo(() => {
+    if (!dateEnd) return null;
+
+    const now = new Date();
+    const end = new Date(dateEnd);
+
+    if (end <= now) return 'Ended';
+
+    return `${formatDistanceStrict(now, end, {
+      unit: 'minute',
+      roundingMethod: 'floor',
+    })} left`;
+  }, [dateEnd]);
 
   return (
     <div
       ref={ref}
-      className="flex bg-white rounded-lg shadow-sm overflow-hidden border border-[#E6E9EC] text-sm min-h-[180px] max-h-60"
+      className="flex bg-white rounded-lg shadow-sm overflow-hidden border border-[#E6E9EC] text-sm min-h-[180px]"
+      role="article"
+      aria-label={`Lot card for ${title}`}
     >
       {/* Left: Image */}
-      <div className="w-85 h-60 relative overflow-hidden rounded-l-lg">
-        <Image src={imageUrl} alt={title} fill className="object-cover" />
+      <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg">
+        <Image
+          src={imageUrl}
+          alt={title || 'Lot image'}
+          fill
+          className="object-cover"
+        />
       </div>
 
       {/* Center */}
       <div className="flex flex-col flex-1">
-        {/* Title */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex justify-between items-start">
-            <h2 className="text-xl flex items-center gap-2">
+            <h2
+              className="text-xl flex items-center gap-2"
+              aria-label={`Title: ${title}`}
+            >
               {title}
-              {site === 1 || site === 3 ? (
+              {siteLogo && (
                 <Image
                   width={34}
                   height={20}
-                  src="/copart.svg"
-                  alt="Copart"
+                  src={siteLogo.src}
+                  alt={siteLogo.alt}
                   className="h-5"
                 />
-              ) : site === 2 || site === 4 ? (
-                <Image
-                  width={34}
-                  height={20}
-                  src="/IAA.svg"
-                  alt="IAAI"
-                  className="h-5"
-                />
-              ) : null}
+              )}
             </h2>
           </div>
         </div>
 
-        {/* Info grid */}
-        <div className="grid grid-cols-4 gap-x-4   text-sm">
+        <div className="grid grid-cols-3 custom-grid-cols-4  text-sm">
           <InfoRow
             label="Status"
             value={
@@ -179,9 +216,14 @@ export default function LotCard(props: PropLot) {
             <InfoRow
               label="Odometer"
               value={
-                <div className="d-flex flex gap-1">
-                  <div className="mr-1 text-nowrap">{odometer || '-'} miles</div>
-                  <Badge label={odobrand || ''} isPositive={odobrand === "Actual"} />
+                <div className="flex gap-1">
+                  <div className="mr-1 text-nowrap">
+                    {odometer || '-'} miles
+                  </div>
+                  <Badge
+                    label={odobrand || ''}
+                    isPositive={odobrand === 'Actual'}
+                  />
                 </div>
               }
             />
@@ -194,20 +236,38 @@ export default function LotCard(props: PropLot) {
 
       {/* Right: Bid + Time */}
       <div className="flex flex-col justify-between p-4 border-l border-[#E6E9EC] w-80">
-        <div className="text-small-300  text-gray-500">
-          <div>
-            📅{' '}
-            {new Date(dateEnd || '').toLocaleString('en-GB', {
-              dateStyle: 'medium',
-              timeStyle: 'short',
-            })}
+        <div
+          className="text-sm text-gray-500"
+          aria-label="Auction date and time left"
+        >
+          <div className="flex items-center gap-2">
+            <Image
+              src="/Calendar-Month-Icon.svg"
+              alt="Calendar icon"
+              width={16}
+              height={16}
+              className="shrink-0"
+            />
+            <span className='text-xs font-[350]'>{auctionDate}</span>
           </div>
-          <div className="text-green-600 mt-1">⏱ 0 d 0 h 42 min left</div>
+          <div className="text-green-600 mt-1 flex items-center gap-2">
+            <Image
+              src="/Clock.svg"
+              alt="Clock icon"
+              width={16}
+              height={16}
+              className="shrink-0"
+            />
+            <span className='text-xs font-[350]'>{timeLeft}</span>
+          </div>
         </div>
 
         <BidBox currentBid={currentBid} priceNew={priceNew} />
 
-        <button className="mb-4 bg-[#FFB839] hover:bg-yellow-300 text-xs border border-[#BF8A2B] font-[350] text-black py-2 rounded max-w-[272px]">
+        <button
+          className="mb-4 bg-[#FFB839] hover:bg-yellow-300 text-xs border border-[#BF8A2B] font-[350] text-black py-2 rounded max-w-[272px]"
+          aria-label={`Place a bid for ${title}`}
+        >
           Bid Now
         </button>
       </div>

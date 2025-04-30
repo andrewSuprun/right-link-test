@@ -1,20 +1,24 @@
 // domains/lots/hooks.ts
 import { useState, useEffect } from 'react';
 import { getLots } from './api';
-import { FilterParams, Lot, PropLot } from './types';
+import { Lot, PropLot } from './types';
 
 import useSWR from 'swr';
 import { fetcher } from '../../lib/fetcher';
+import { useFilterStore } from '../../domains/lots/store';
+
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 
-export const useLots = (initialFilters?: FilterParams) => {
-  const [lots, setLots] = useState<Lot[]>([]);
-  const [filters, setFilters] = useState<FilterParams>(initialFilters || {});
+
+export const useLots = () => {
+  const [lots, setLots] = useState<PropLot[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { filters, setFilters } = useFilterStore();
 
   const mapLot = (lot: Lot): PropLot => ({
     id: lot.id,
@@ -61,26 +65,21 @@ export const useLots = (initialFilters?: FilterParams) => {
     fetchLots(nextPage);
   };
 
-  const applyFilters = (newFilters: FilterParams) => {
-    setPage(1);
-    setFilters(newFilters);
-    fetchLots(1, true);
-  };
-
   useEffect(() => {
+    setPage(1);
     fetchLots(1, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filters]);
 
   return {
     lots,
     loadMore,
     hasMore,
     isLoading,
-    applyFilters,
+    setFilters,
     filters,
   };
 };
+
 
 
 

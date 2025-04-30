@@ -21,3 +21,38 @@ body {
 .text-small-300 {
   @apply text-sm font-light;
 }
+
+@media (min-width: 1920px) {
+  .custom-grid-cols-4 {
+    @apply grid-cols-4;
+  }
+}
+
+/* Apply WebKit styles first (for Chrome, Safari) */
+.custom-scroll::-webkit-scrollbar {
+  width: 14px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #fff;
+  border-left: 1px solid #E6E9EC;
+  border-radius: 0;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #ff2600;
+  border: 3px solid #ffffff;
+  border-radius: 0;
+  border: none;
+}
+
+/* Apply Firefox styles only if WebKit scrollbars are NOT supported */
+@supports not selector(::-webkit-scrollbar) {
+  .custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #ff2600 #ffffff;
+    min-height: 151px;
+  }
+}
+
+

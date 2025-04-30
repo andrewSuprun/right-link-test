@@ -65,6 +65,7 @@ export interface FilterParams {
   color?: string;
   fuel?: string;
   transmission?: string;
+  site?: number;
 }
 
 export type PropLot = {
