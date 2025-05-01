@@ -272,7 +272,7 @@ export default function LotCard(props: PropLot) {
       </div>
 
       {/* Right: Bid + Time */}
-      <div className="flex flex-col justify-between p-4 border-l border-[#E6E9EC] w-80">
+      <div className="flex flex-col justify-between p-4 border-l mt-2 border-[#E6E9EC] w-80">
         <div
           className="text-sm text-gray-500"
           aria-label="Auction date and time left"
