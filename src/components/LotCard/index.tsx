@@ -50,7 +50,7 @@ const BidBox = ({
   currentBid?: number | null;
   priceNew?: number | null;
 }) => (
-  <div className={`mt-4 ${priceNew ? 'flex gap-2' : ''}`}>
+  <div className={`mt-4 ${priceNew ? 'flex gap-2' : ''} max-w-[272px]`}>
     <div
       className={`border border-[#C0C9D0] rounded px-4 py-2 text-xs font-[350] text-gray-800 bg-[#F2F4F6] ${
         priceNew ? 'w-1/2' : 'max-w-[272px]'
