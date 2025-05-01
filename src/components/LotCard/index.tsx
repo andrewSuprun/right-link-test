@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { formatDistanceStrict } from 'date-fns';
 import { capitalizeWords, cn } from '../../lib/utils';
@@ -71,24 +71,33 @@ const BidBox = ({
 
 export const LotImage = ({ src, alt }: { src: string; alt: string }) => {
   const isSafari = useIsSafari();
+  const [hasError, setHasError] = useState(false);
 
   return (
-    <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg">
-      {isSafari ? (
-        <Image
-          src={src}
-          alt={alt}
-          width={340}
-          height={240}
-          className="object-cover"
-        />
+    <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg bg-gray-200">
+      {!hasError ? (
+        isSafari ? (
+          <Image
+            src={src}
+            alt={alt}
+            width={340}
+            height={240}
+            className="object-cover"
+            onError={() => setHasError(true)}
+          />
+        ) : (
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            className="object-cover"
+            onError={() => setHasError(true)}
+          />
+        )
       ) : (
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-cover"
-        />
+        <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-xs text-gray-500">
+          Image not available
+        </div>
       )}
     </div>
   );
