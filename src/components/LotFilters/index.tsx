@@ -149,7 +149,7 @@ export const CarFilters = () => {
         <div className="border-t border-[#E6E9EC] w-full"></div>
         <div className="px-4 pt-4  pb-2 max-h-[314px] overflow-y-auto custom-scroll"   style={{ maxHeight: '338px', WebkitOverflowScrolling: 'touch' }}>
           {filteredMakes.map((b) => (
-            <label key={b} className="flex items-center gap-2">
+            <label key={b} className="flex items-center gap-2 mt-2">
               <input
                 type="checkbox"
                 className="w-4 h-4 border-2  border-gray-400 rounded appearance-none checked:bg-gray-300"
