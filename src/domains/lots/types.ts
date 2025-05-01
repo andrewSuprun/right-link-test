@@ -56,7 +56,7 @@ export interface Lot {
 }
 
 export interface FilterParams {
-  make?: string;
+  make?: string[];
   model?: string;
   year_from?: number;
   year_to?: number;
@@ -65,7 +65,7 @@ export interface FilterParams {
   color?: string;
   fuel?: string;
   transmission?: string;
-  site?: number;
+  site?: number[];
 }
 
 export type PropLot = {

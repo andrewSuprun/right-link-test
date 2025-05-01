@@ -89,9 +89,9 @@ export const CarFilters = () => {
     setFilters({ ...filters, ...updated });
   }, [filters, setFilters]);
 
-  const toggleArrayFilter = useCallback((arr: string[] | number[] = [], value: string | number) =>
+  const toggleArrayFilter = useCallback(<T extends string | number>(arr: T[] = [], value: T): T[] =>
     arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
-  []);
+  [],);
 
   const filteredMakes = useMemo(() =>
     makesModels
