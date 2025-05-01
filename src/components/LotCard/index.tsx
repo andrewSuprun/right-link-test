@@ -22,7 +22,7 @@ const Badge = ({
 }) => (
   <span
     className={cn(
-      'px-2 py-0.5 max-h-5 rounded text-[14px] font-medium text-nowrap',
+      'px-2 py-0.5 rounded text-[14px] font-[350] text-nowrap leading-[1.2] inline-flex items-center justify-center',
       isPositive ? greenIcon : redIcon
     )}
   >
@@ -38,7 +38,7 @@ const InfoRow = ({
   value: React.ReactNode;
 }) => (
   <div className="p-5 text-sm flex flex-col">
-    <span className="text-gray-400 font-light text-[14px]">{label}:</span>
+    <span className="text-gray-400 mb-1 font-light text-[14px]">{label}:</span>
     <span className="font-[350] break-all text-[14px]">{value ?? '-'}</span>
   </div>
 );
@@ -190,7 +190,7 @@ export default function LotCard(props: PropLot) {
           className="object-cover"
         />
       </div> */}
-      <LotImage src={imageUrl} alt={title || 'Lot image'}/>
+      <LotImage src={imageUrl} alt={title || 'Lot image'} />
 
       {/* Center */}
       <div className="flex flex-col flex-1">
@@ -253,7 +253,7 @@ export default function LotCard(props: PropLot) {
             <InfoRow
               label="Odometer"
               value={
-                <div className="flex gap-1">
+                <div className="flex gap-1 items-center justify-center">
                   <div className="mr-1 text-nowrap">
                     {odometer || '-'} miles
                   </div>
@@ -285,7 +285,7 @@ export default function LotCard(props: PropLot) {
               height={16}
               className="shrink-0"
             />
-            <span className='text-[14px] font-[350]'>{auctionDate}</span>
+            <span className="text-[14px] font-[350]">{auctionDate}</span>
           </div>
           <div className="text-green-600 mt-1 flex items-center gap-2">
             <Image
@@ -295,7 +295,7 @@ export default function LotCard(props: PropLot) {
               height={16}
               className="shrink-0"
             />
-            <span className='text-[14px] font-[350]'>{timeLeft}</span>
+            <span className="text-[14px] font-[350]">{timeLeft}</span>
           </div>
         </div>
 
