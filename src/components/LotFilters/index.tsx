@@ -147,7 +147,7 @@ export const CarFilters = () => {
           className="w-full p-3 text-sm placeholder:text-[#A0A4A8] text-[#A0A4A8] focus:outline-none"
         />
         <div className="border-t border-[#E6E9EC] w-full"></div>
-        <div className="px-4 pt-4  pb-2 max-h-[298px] overflow-y-auto custom-scroll">
+        <div className="px-4 pt-4  pb-2 max-h-[314px] overflow-y-auto custom-scroll"   style={{ maxHeight: '338px', WebkitOverflowScrolling: 'touch' }}>
           {filteredMakes.map((b) => (
             <label key={b} className="flex items-center gap-2">
               <input

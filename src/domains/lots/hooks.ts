@@ -17,6 +17,7 @@ export const useLots = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [total, setTotal] = useState<number>()
 
   const { filters, setFilters } = useFilterStore();
 
@@ -51,6 +52,7 @@ export const useLots = () => {
         setLots((prev) => [...prev, ...mappedLots]);
       }
       setHasMore(newPage < res.pages);
+      setTotal(res.count)
     } catch (e) {
       console.error('Failed to fetch lots', e);
     } finally {
@@ -77,6 +79,7 @@ export const useLots = () => {
     isLoading,
     setFilters,
     filters,
+    total,
   };
 };
 

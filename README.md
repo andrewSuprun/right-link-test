@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lot Catalog App
 
-## Getting Started
+A responsive car auction lot catalog built with **Next.js**, **Tailwind CSS**, and **React Window**, with dynamic filtering, optimized data requests for current bid value, and optimized rendering.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- ⚙️ Filters by:
+  - Auction Type (Copart, IAAI)
+  - Year Range (from / to)
+  - Brand & Model (with search)
+- 🧠 Intelligent Store:
+  - Global filter state with Zustand (`useFilterStore`)
+- 📦 Data:
+  - `getMakesAndModels()` from `/domains/lots/api`
+  - `useLots()` hook handles lot fetching, pagination, and `total`(total results)
+- 🔁 Infinite Scroll:
+  - Uses `react-window` (`FixedSizeList`) for virtualized rendering
+  - Load More button rendered at end of list
+- 🖼️ Optimized Images:
+  - Uses `next/image` with Chrome/Safari-specific behavior
+- 🎨 Fully Styled:
+  - Custom scrollbars
+  - Accessibility-friendly selects, checkboxes
+  - Custom Tailwind utility classes
+
+## Tech Stack
+
+- **React** / **Next.js** (App Router, Server Components)
+- **Tailwind CSS** (Utility-first styling)
+- **Zustand** (Global state for filters)
+- **React Window** (Virtualized list rendering)
+- **Date-fns** (Time distance formatting)
+- **react-intersection-observer** (Performance and user experience)
+
+## Project Structure
+
+```
+app/
+  page.tsx                # Main layout
+components/
+  CarFilters.tsx          # Sidebar filters UI
+  LotCard.tsx             # Lot listing card
+  LotList.tsx             # Virtualized scroll list
+  LotImage.tsx            # Conditional fill/image fallback
+lib/
+  utils.ts                # cn(), capitalizeWords()
+domains/lots/
+  api.ts                  # getMakesAndModels()
+  hooks.ts                # useLots(), useCurrentBidWhenVisible()
+  store.ts                # useFilterStore() Zustand logic
+  types.ts                # Lot props
+public/
+  *.svg                   # Icons (Vector, Clock, Calendar, Copart, IAAI)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to Run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Run Dev Server**
+   ```bash
+   npm run dev
+   ```
 
-## Learn More
+3. **Environment**
+   Make sure `/public` contains all required SVGs:
+   - `Vector.svg`, `Vector-down.svg`
+   - `Calendar-Month-Icon.svg`, `Clock.svg`
+   - `copart.svg`, `IAA.svg`
 
-To learn more about Next.js, take a look at the following resources:
+## Developer Notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Scrollbar styles adjusted via `::-webkit-scrollbar` and Firefox fallback using `@supports not selector(...)`
+- Safari compatibility ensured for:
+  - `<Image fill>` fallback to `width/height`
+  - Brand list fixed height and scroll
+- Grid layout is responsive and conditionally `grid-cols-4` above 1920px
+- Search result title is above both filters and list content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Accessibility
 
-## Deploy on Vercel
+- Inputs have associated `aria-label`s
+- Dropdowns are styled but preserve keyboard accessibility
+- Buttons reflect expanded state with `aria-expanded`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

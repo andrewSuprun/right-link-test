@@ -7,6 +7,7 @@ import { formatDistanceStrict } from 'date-fns';
 import { capitalizeWords, cn } from '../../lib/utils';
 import { PropLot } from '../../domains/lots/types';
 import { useCurrentBidWhenVisible } from '../../domains/lots/hooks';
+import { useIsSafari } from '../../hooks';
 
 const greenIcon =
   'bg-green-100 border font-[350] border-green-200 text-green-700';
@@ -36,7 +37,7 @@ const InfoRow = ({
   label: string;
   value: React.ReactNode;
 }) => (
-  <div className="p-6 text-sm flex flex-col">
+  <div className="p-4 text-sm flex flex-col">
     <span className="text-gray-400 font-light">{label}:</span>
     <span className="font-[350] break-all">{value ?? '-'}</span>
   </div>
@@ -67,6 +68,32 @@ const BidBox = ({
     )}
   </div>
 );
+
+export const LotImage = ({ src, alt }: { src: string; alt: string }) => {
+  const isSafari = useIsSafari();
+
+  return (
+    <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg">
+      {isSafari ? (
+        <Image
+          src={src}
+          alt={alt}
+          width={340}
+          height={240}
+          className="object-cover"
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+        />
+      )}
+    </div>
+  );
+};
+
 
 export default function LotCard(props: PropLot) {
   const {
@@ -146,14 +173,15 @@ export default function LotCard(props: PropLot) {
       aria-label={`Lot card for ${title}`}
     >
       {/* Left: Image */}
-      <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg">
+      {/* <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg">
         <Image
           src={imageUrl}
           alt={title || 'Lot image'}
           fill
           className="object-cover"
         />
-      </div>
+      </div> */}
+      <LotImage src={imageUrl} alt={title || 'Lot image'}/>
 
       {/* Center */}
       <div className="flex flex-col flex-1">
