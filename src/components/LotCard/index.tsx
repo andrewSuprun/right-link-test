@@ -22,7 +22,7 @@ const Badge = ({
 }) => (
   <span
     className={cn(
-      'px-2 py-0.5 max-h-5 rounded text-xs font-medium text-nowrap',
+      'px-2 py-0.5 max-h-5 rounded text-[14px] font-medium text-nowrap',
       isPositive ? greenIcon : redIcon
     )}
   >
@@ -37,9 +37,9 @@ const InfoRow = ({
   label: string;
   value: React.ReactNode;
 }) => (
-  <div className="p-4 text-sm flex flex-col">
-    <span className="text-gray-400 font-light">{label}:</span>
-    <span className="font-[350] break-all">{value ?? '-'}</span>
+  <div className="p-5 text-sm flex flex-col">
+    <span className="text-gray-400 font-light text-[14px]">{label}:</span>
+    <span className="font-[350] break-all text-[14px]">{value ?? '-'}</span>
   </div>
 );
 
@@ -52,7 +52,7 @@ const BidBox = ({
 }) => (
   <div className={`mt-4 ${priceNew ? 'flex gap-2' : ''} max-w-[272px]`}>
     <div
-      className={`border border-[#C0C9D0] rounded px-4 py-2 text-xs font-[350] text-gray-800 bg-[#F2F4F6] ${
+      className={`border border-[#C0C9D0] rounded px-4 py-2 text-[14px] font-[350] text-gray-800 bg-[#F2F4F6] ${
         priceNew ? 'w-1/2' : 'max-w-[272px]'
       }`}
     >
@@ -61,7 +61,7 @@ const BidBox = ({
     </div>
 
     {priceNew && (
-      <div className="w-1/2 border rounded px-4 py-2 text-xs font-[350] text-red-600 border-red-300 bg-red-50">
+      <div className="w-1/2 border rounded px-4 py-2 text-[14px] font-[350] text-red-600 border-red-300 bg-red-50">
         <div className="text-red-400">Buy Now:</div>
         <div>${priceNew}</div>
       </div>
@@ -95,7 +95,7 @@ export const LotImage = ({ src, alt }: { src: string; alt: string }) => {
           />
         )
       ) : (
-        <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-xs text-gray-500">
+        <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-[14px] text-gray-500">
           Image not available
         </div>
       )}
@@ -197,7 +197,7 @@ export default function LotCard(props: PropLot) {
         <div className="p-6 border-b border-gray-200">
           <div className="flex justify-between items-start">
             <h2
-              className="text-xl flex items-center gap-2"
+              className="text-xl font-[400] flex items-center gap-2"
               aria-label={`Title: ${title}`}
             >
               {title}
@@ -285,7 +285,7 @@ export default function LotCard(props: PropLot) {
               height={16}
               className="shrink-0"
             />
-            <span className='text-xs font-[350]'>{auctionDate}</span>
+            <span className='text-[14px] font-[350]'>{auctionDate}</span>
           </div>
           <div className="text-green-600 mt-1 flex items-center gap-2">
             <Image
@@ -295,14 +295,14 @@ export default function LotCard(props: PropLot) {
               height={16}
               className="shrink-0"
             />
-            <span className='text-xs font-[350]'>{timeLeft}</span>
+            <span className='text-[14px] font-[350]'>{timeLeft}</span>
           </div>
         </div>
 
         <BidBox currentBid={currentBid} priceNew={priceNew} />
 
         <button
-          className="mb-4 bg-[#FFB839] hover:bg-yellow-300 text-xs border border-[#BF8A2B] font-[350] text-black py-2 rounded max-w-[272px]"
+          className="mb-4 bg-[#FFB839] hover:bg-yellow-300 text-[14px] border border-[#BF8A2B] font-[350] text-black py-2 rounded max-w-[272px]"
           aria-label={`Place a bid for ${title}`}
         >
           Bid Now
