@@ -106,7 +106,7 @@ export const CarFilters = () => {
   [filters.make, makesModels]);
 
   return (
-    <div className="w-[302px] space-y-4 text-sm text-black">
+    <div className="w-[302px] space-y-4 text-[14px] text-black">
 
       <FilterSection title="Auction Type" isOpen={isAuctionOpen} toggle={() => setIsAuctionOpen(!isAuctionOpen)}>
         <div className="px-4 py-3 space-y-2">
@@ -144,7 +144,7 @@ export const CarFilters = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search"
           aria-label="Search brand"
-          className="w-full p-3 text-sm placeholder:text-[#A0A4A8] text-[#A0A4A8] focus:outline-none"
+          className="w-full p-3 text-[14px] placeholder:text-[#A0A4A8] text-[#A0A4A8] focus:outline-none"
         />
         <div className="border-t border-[#E6E9EC] w-full"></div>
         <div className="px-4 pt-4  pb-2 max-h-[314px] overflow-y-auto custom-scroll"   style={{ maxHeight: '338px', WebkitOverflowScrolling: 'touch' }}>
