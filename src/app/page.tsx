@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="px-4 ">
       {/* Title above everything */}
-      <h1 className="text-[24px] font-[400] p-6">
+      <h1 className="text-[24px] font-[400] p-6 -ml-4">
         {total} Search Result{total !== 1 && 's'}
         {selectedMakeLabel && `: ${selectedMakeLabel}`}
       </h1>
