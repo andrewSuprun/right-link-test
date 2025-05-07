@@ -68,7 +68,7 @@ export default function LotList({ lots, loadMore, hasMore, isLoading }: LotListP
               className='pb-4'
             >
               {isLoader ? (
-                <div className="flex justify-center items-center -mt-6">
+                <div className="flex justify-center items-center mt-6">
                   <button
                     onClick={loadMore}
                     className="px-6 py-3 w-[320px] bg-[#0C2340] text-white rounded-lg text-xs font-[350] hover:bg-[#16325c] transition"
