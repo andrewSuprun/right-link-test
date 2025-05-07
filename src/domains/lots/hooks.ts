@@ -94,6 +94,7 @@ export const useLots = () => {
       updateUrl({ ...filters, page: '1' });
       fetchLots(1, true);
     }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, initialized]);
 
   return {

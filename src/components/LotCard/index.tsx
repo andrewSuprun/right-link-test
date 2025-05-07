@@ -7,7 +7,6 @@ import { formatDistanceStrict } from 'date-fns';
 import { capitalizeWords, cn } from '../../lib/utils';
 import { PropLot } from '../../domains/lots/types';
 import { useCurrentBidWhenVisible } from '../../domains/lots/hooks';
-import { useIsSafari } from '../../hooks';
 
 const greenIcon =
   'bg-green-100 border font-[350] border-green-200 text-green-700';
