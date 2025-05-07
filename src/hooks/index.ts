@@ -44,8 +44,8 @@ export const useUpdateUrlFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
 
     Object.entries(updated).forEach(([key, value]) => {
-      params.delete(key); // видаляємо всі попередні значення ключа
-      if (value == null) return; // якщо null, не додаємо
+      params.delete(key);
+      if (value == null) return;
 
       if (Array.isArray(value)) {
         value.forEach((v) => params.append(key, String(v)));
@@ -75,7 +75,7 @@ export const useInitializeFiltersFromURL = () => {
     };
 
     setFilters(filters);
-    markInitialized(); // ✅ Let the app know filters are ready
+    markInitialized();
   }, [searchParams, setFilters, markInitialized]);
 };
 

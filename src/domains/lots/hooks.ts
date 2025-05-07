@@ -86,7 +86,6 @@ export const useLots = () => {
 
       if (firstRenderRef.current) {
         firstRenderRef.current = false;
-        // Do not reset page — just fetch with current one
         fetchLots(page, true);
         return;
       }

@@ -8,9 +8,9 @@ export type FiltersState = {
     year_from?: number;
     year_to?: number;
   };
-  initialized: boolean; // ✅ NEW
+  initialized: boolean; 
   setFilters: (filters: FiltersState['filters']) => void;
-  markInitialized: () => void; // ✅ NEW
+  markInitialized: () => void; 
 };
 
 export const useFilterStore = create<FiltersState>((set) => ({
