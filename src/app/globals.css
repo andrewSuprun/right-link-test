@@ -25,6 +25,17 @@ body {
   }
 }
 
+@media (max-width: 1440px) {
+  .custom-grid-cols-2 {
+    @apply grid-cols-2;
+  }
+
+  .custom-p-3 {
+    @apply p-3
+  }
+}
+
+
 /* Apply WebKit styles first (for Chrome, Safari) */
 .custom-scroll::-webkit-scrollbar {
   width: 14px;

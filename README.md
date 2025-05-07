@@ -14,7 +14,7 @@ A responsive car auction lot catalog built with **Next.js**, **Tailwind CSS**, a
   - `getMakesAndModels()` from `/domains/lots/api`
   - `useLots()` hook handles lot fetching, pagination, and `total`(total results)
 - 🔁 Infinite Scroll:
-  - Uses `react-window` (`FixedSizeList`) for virtualized rendering
+  - Uses `@tanstack/react-virtual` for virtualized rendering
   - Load More button rendered at end of list
 - 🖼️ Optimized Images:
   - Uses `next/image` with Chrome/Safari-specific behavior

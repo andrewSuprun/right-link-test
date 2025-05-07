@@ -37,7 +37,7 @@ const InfoRow = ({
   label: string;
   value: React.ReactNode;
 }) => (
-  <div className="p-5 text-sm flex flex-col">
+  <div className="p-5 custom-p-3 text-sm flex flex-col">
     <span className="text-gray-400 mb-1 font-light text-[14px]">{label}:</span>
     <span className="font-[350] break-all text-[14px]">{value ?? '-'}</span>
   </div>
@@ -70,30 +70,19 @@ const BidBox = ({
 );
 
 export const LotImage = ({ src, alt }: { src: string; alt: string }) => {
-  const isSafari = useIsSafari();
   const [hasError, setHasError] = useState(false);
 
   return (
-    <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg bg-gray-200">
+    <div className="min-w-85 min-h-60 relative overflow-hidden rounded-l-lg">
       {!hasError ? (
-        isSafari ? (
-          <Image
-            src={src}
-            alt={alt}
-            width={340}
-            height={240}
-            className="object-cover"
-            onError={() => setHasError(true)}
-          />
-        ) : (
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-cover"
-            onError={() => setHasError(true)}
-          />
-        )
+        <Image
+          src={src}
+          alt={alt}
+          width={340}
+          height={240}
+          className="object-cover"
+          onError={() => setHasError(true)}
+        />
       ) : (
         <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-[14px] text-gray-500">
           Image not available
@@ -214,7 +203,7 @@ export default function LotCard(props: PropLot) {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 custom-grid-cols-4  text-sm">
+        <div className="grid grid-cols-3 custom-grid-cols-4  custom-grid-cols-2  text-sm">
           <InfoRow
             label="Status"
             value={
@@ -272,7 +261,7 @@ export default function LotCard(props: PropLot) {
       </div>
 
       {/* Right: Bid + Time */}
-      <div className="flex flex-col justify-between p-4 border-l mt-2 border-[#E6E9EC] w-80">
+      <div className="flex flex-col gap-4 p-4 border-l mt-2 border-[#E6E9EC] w-80">
         <div
           className="text-sm text-gray-500"
           aria-label="Auction date and time left"
