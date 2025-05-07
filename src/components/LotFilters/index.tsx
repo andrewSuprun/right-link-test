@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { cn } from '../../lib/utils';
 import { useFilterStore } from '../../domains/lots/store';
 import { getMakesAndModels } from '../../domains/lots/api';
+import { useUpdateUrlFilters } from '../../hooks';
 
 const auctionTypes = [
   { label: 'Copart', value: 1 },
@@ -80,14 +81,17 @@ export const CarFilters = () => {
   const [isAuctionOpen, setIsAuctionOpen] = useState(true);
   const [isYearOpen, setIsYearOpen] = useState(true);
   const [isBrandOpen, setIsBrandOpen] = useState(true);
+  const updateFiltersInUrl = useUpdateUrlFilters();
 
   useEffect(() => {
     getMakesAndModels().then(setMakesModels);
   }, []);
 
   const updateFilters = useCallback((updated: Partial<typeof filters>) => {
-    setFilters({ ...filters, ...updated });
-  }, [filters, setFilters]);
+    const newFilters = { ...filters, ...updated };
+    setFilters(newFilters);
+    updateFiltersInUrl(newFilters); 
+  }, [filters, setFilters, updateFiltersInUrl]);
 
   const toggleArrayFilter = useCallback(<T extends string | number>(arr: T[] = [], value: T): T[] =>
     arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
@@ -126,15 +130,37 @@ export const CarFilters = () => {
 
       <FilterSection title="Year" isOpen={isYearOpen} toggle={() => setIsYearOpen(!isYearOpen)}>
         <div className="relative flex px-4 py-3 gap-2">
-          {renderCustomSelect(filters.year_from || 2000, (newFrom) => {
-            const to = filters.year_to || new Date().getFullYear();
-            updateFilters({ year_from: newFrom, year_to: newFrom > to ? newFrom : to });
-          }, false, 'year_from')}
+          {renderCustomSelect(
+            filters.year_from ?? 2000, // show default if undefined
+            (newFrom) => {
+              const to = filters.year_to ?? 2025;
+              const safeFrom = newFrom;
+              const safeTo = newFrom > to ? newFrom : to;
 
-          {renderCustomSelect(filters.year_to || new Date().getFullYear(), (newTo) => {
-            const from = filters.year_from || 1990;
-            updateFilters({ year_from: newTo < from ? newTo : from, year_to: newTo });
-          }, true, 'year_to')}
+              updateFilters({
+                year_from: safeFrom,
+                year_to: safeTo,
+              });
+            },
+            false,
+            'year_from'
+          )}
+
+          {renderCustomSelect(
+            filters.year_to ?? 2025,
+            (newTo) => {
+              const from = filters.year_from ?? 2000;
+              const safeFrom = newTo < from ? newTo : from;
+              const safeTo = newTo;
+
+              updateFilters({
+                year_from: safeFrom,
+                year_to: safeTo,
+              });
+            },
+            true,
+            'year_to'
+          )}
         </div>
       </FilterSection>
 

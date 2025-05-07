@@ -1,11 +1,14 @@
 // domains/lots/hooks.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { getLots } from './api';
 import { Lot, PropLot } from './types';
 
 import useSWR from 'swr';
 import { fetcher } from '../../lib/fetcher';
 import { useFilterStore } from '../../domains/lots/store';
+import { useSearchParams } from 'next/navigation';
+import { useUpdateUrlFilters } from '../../hooks';
+
 
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
@@ -13,13 +16,20 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 
 export const useLots = () => {
+  const searchParams = useSearchParams();
+  const updateUrl = useUpdateUrlFilters();
+  const initialPage = useMemo(() => parseInt(searchParams.get('page') || '1', 10), [searchParams]);
+
+  const [page, setPage] = useState(initialPage);
   const [lots, setLots] = useState<PropLot[]>([]);
-  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [total, setTotal] = useState<number>()
+  const [total, setTotal] = useState<number>();
 
-  const { filters, setFilters } = useFilterStore();
+  const firstRenderRef = useRef(true);
+  const filterKey = useRef<string>('');
+
+  const { filters, initialized } = useFilterStore();
 
   const mapLot = (lot: Lot): PropLot => ({
     id: lot.id,
@@ -41,18 +51,15 @@ export const useLots = () => {
     odobrand: lot.odobrand,
   });
 
-  const fetchLots = async (newPage = page, reset = false) => {
+  const fetchLots = async (fetchPage: number, reset = false) => {
+    if (!initialized) return;
     setIsLoading(true);
     try {
-      const res = await getLots({ page: newPage, size: 10, ...filters });
-      const mappedLots = res.data.map(mapLot);
-      if (reset) {
-        setLots(mappedLots);
-      } else {
-        setLots((prev) => [...prev, ...mappedLots]);
-      }
-      setHasMore(newPage < res.pages);
-      setTotal(res.count)
+      const res = await getLots({ page: fetchPage, size: 10, ...filters });
+      const mapped = res.data.map(mapLot);
+      setLots((prev) => (reset ? mapped : [...prev, ...mapped]));
+      setHasMore(fetchPage < res.pages);
+      setTotal(res.count);
     } catch (e) {
       console.error('Failed to fetch lots', e);
     } finally {
@@ -61,27 +68,45 @@ export const useLots = () => {
   };
 
   const loadMore = () => {
-    if (!hasMore || isLoading) return;
+    if (!hasMore || isLoading || !initialized) return;
     const nextPage = page + 1;
     setPage(nextPage);
+    updateUrl({ ...filters, page: String(nextPage) });
     fetchLots(nextPage);
   };
 
   useEffect(() => {
-    setPage(1);
-    fetchLots(1, true);
-  }, [filters]);
+    if (!initialized) return;
+
+    const currentKey = JSON.stringify(filters);
+    const isFilterChanged = currentKey !== filterKey.current;
+
+    if (isFilterChanged) {
+      filterKey.current = currentKey;
+
+      if (firstRenderRef.current) {
+        firstRenderRef.current = false;
+        // Do not reset page — just fetch with current one
+        fetchLots(page, true);
+        return;
+      }
+
+      setPage(1);
+      updateUrl({ ...filters, page: '1' });
+      fetchLots(1, true);
+    }
+  }, [filters, initialized]);
 
   return {
     lots,
     loadMore,
     hasMore,
     isLoading,
-    setFilters,
     filters,
     total,
   };
 };
+
 
 
 
