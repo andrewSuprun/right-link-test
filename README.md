@@ -88,3 +88,10 @@ public/
 
 ---
 
+## 📄 Environment Variables
+
+Create `.env.local` :
+
+```env
+NEXT_PUBLIC_API_TOKEN=0de932b6-5108-4129-a71d-dac594e0f6c1
+NEXT_PUBLIC_API_URL=https://api.apicar.store/api
