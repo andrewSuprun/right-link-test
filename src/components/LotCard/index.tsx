@@ -36,7 +36,7 @@ const InfoRow = ({
   label: string;
   value: React.ReactNode;
 }) => (
-  <div className="p-5 custom-p-3 text-sm flex flex-col">
+  <div className="p-5 custom-p-2 text-sm flex flex-col">
     <span className="text-gray-400 mb-1 font-light text-[14px]">{label}:</span>
     <span className="font-[350] break-all text-[14px]">{value ?? '-'}</span>
   </div>
@@ -223,7 +223,7 @@ export default function LotCard(props: PropLot) {
               />
             }
           />
-          <div className="-mt-4 col-span-1">
+          <div className=" col-span-1">
             <InfoRow
               label="Key"
               value={
@@ -234,10 +234,10 @@ export default function LotCard(props: PropLot) {
               }
             />
           </div>
-          <div className="-mt-4 col-span-1">
+          <div className=" col-span-1">
             <InfoRow label="VIN Code" value={vin} />
           </div>
-          <div className="-mt-4 col-span-1">
+          <div className=" col-span-1">
             <InfoRow
               label="Odometer"
               value={
@@ -253,7 +253,7 @@ export default function LotCard(props: PropLot) {
               }
             />
           </div>
-          <div className="-mt-4 col-span-1">
+          <div className=" col-span-1">
             <InfoRow label="Location" value={capitalizeWords(location ?? '')} />
           </div>
         </div>

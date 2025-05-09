@@ -30,8 +30,8 @@ body {
     @apply grid-cols-2;
   }
 
-  .custom-p-3 {
-    @apply p-3
+  .custom-p-2 {
+    @apply p-2
   }
 }
 
