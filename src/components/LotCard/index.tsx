@@ -237,7 +237,7 @@ export default function LotCard(props: PropLot) {
           <div className=" col-span-1">
             <InfoRow label="VIN Code" value={vin} />
           </div>
-          <div className=" col-span-1">
+          <div className="mb-2 col-span-1">
             <InfoRow
               label="Odometer"
               value={
@@ -253,7 +253,7 @@ export default function LotCard(props: PropLot) {
               }
             />
           </div>
-          <div className=" col-span-1">
+          <div className="mb-2 col-span-1">
             <InfoRow label="Location" value={capitalizeWords(location ?? '')} />
           </div>
         </div>
